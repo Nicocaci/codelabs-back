@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 
 const generateToken = (user) => {
-    if(!PRIVATE_KEY) throw new Error("Private key is not defined in environment variables");
+    const secret = process.env.JWT_SECRET;
+    if (!secret) throw new Error("JWT_SECRET no está definida en las variables de entorno");
 
-    return jwt.sign(user, PRIVATE_KEY, { expiresIn: "1h" });
+    return jwt.sign(user, secret, { expiresIn: "1h" });
 };
 export default generateToken;
