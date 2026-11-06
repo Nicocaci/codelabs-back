@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import portfolioRouter from "./router/portfolio.router.js";
 import usuarioRouter from "./router/usuario.router.js";
+import webhookRouter from "./router/webhook.router.js";
 import cors from 'cors'
 
 dotenv.config();
@@ -27,6 +28,8 @@ mongoose.connect(process.env.MONGO_URL)
 
 //Middleware
 app.use(cors({ origin: allowedOrigins }))
+// Webhooks (Cal.com): van antes de express.json() porque necesitan el cuerpo crudo para verificar la firma
+app.use("/webhooks", webhookRouter);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '100kb' }));
 app.use(express.static("public"));
